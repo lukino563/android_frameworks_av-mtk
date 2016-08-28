@@ -233,7 +233,7 @@ private:
 
     // Marks the mCodecBuffers entry as in-use, copies the GraphicBuffer
     // reference into the codec buffer, and submits the data to the codec.
-    status_t submitBuffer_l(const BufferItem &item, int cbi);
+    status_t submitBuffer_l(const BufferQueue::BufferItem &item, int cbi);
 
     // Submits an empty buffer, with the EOS flag set.   Returns without
     // doing anything if we don't have a codec buffer available.
@@ -244,9 +244,9 @@ private:
             int &id, uint64_t frameNum,
             const sp<GraphicBuffer> buffer, const sp<Fence> &fence);
 
-    void setLatestBuffer_l(const BufferItem &item, bool dropped);
+    void setLatestBuffer_l(const BufferQueue::BufferItem &item, bool dropped);
     bool repeatLatestBuffer_l();
-    int64_t getTimestamp(const BufferItem &item);
+    int64_t getTimestamp(const BufferQueue::BufferItem &item);
 
     // called when the data space of the input buffer changes
     void onDataSpaceChanged_l(android_dataspace dataSpace, android_pixel_format pixelFormat);

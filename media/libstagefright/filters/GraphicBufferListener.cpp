@@ -21,8 +21,6 @@
 #include <media/stagefright/foundation/AMessage.h>
 #include <media/stagefright/MediaErrors.h>
 
-#include <gui/BufferItem.h>
-
 #include "GraphicBufferListener.h"
 
 namespace android {
@@ -85,8 +83,8 @@ void GraphicBufferListener::onSidebandStreamChanged() {
     // nothing to do
 }
 
-BufferItem GraphicBufferListener::getBufferItem() {
-    BufferItem item;
+BufferQueue::BufferItem GraphicBufferListener::getBufferItem() {
+    BufferQueue::BufferItem item;
 
     {
         Mutex::Autolock autoLock(mMutex);
@@ -126,7 +124,8 @@ BufferItem GraphicBufferListener::getBufferItem() {
     return item;
 }
 
-sp<GraphicBuffer> GraphicBufferListener::getBuffer(BufferItem item) {
+sp<GraphicBuffer> GraphicBufferListener::getBuffer(
+        BufferQueue::BufferItem item) {
     sp<GraphicBuffer> buf;
     if (item.mSlot < 0 || item.mSlot >= BufferQueue::NUM_BUFFER_SLOTS) {
         ALOGE("getBuffer() received invalid BufferItem: mSlot==%d", item.mSlot);
@@ -139,7 +138,7 @@ sp<GraphicBuffer> GraphicBufferListener::getBuffer(BufferItem item) {
     return buf;
 }
 
-status_t GraphicBufferListener::releaseBuffer(BufferItem item) {
+status_t GraphicBufferListener::releaseBuffer(BufferQueue::BufferItem item) {
     if (item.mSlot < 0 || item.mSlot >= BufferQueue::NUM_BUFFER_SLOTS) {
         ALOGE("getBuffer() received invalid BufferItem: mSlot==%d", item.mSlot);
         return ERROR_OUT_OF_RANGE;
